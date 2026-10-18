@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 import 'core/services/hotkey_service.dart';
-import 'features/home/presentation/views/home_view.dart'; // استدعاء الواجهة
+import 'features/home/presentation/views/home_view.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // تشغيل خدمة الكيبورد
-  await HotKeyService.initGlobalHotKey();
-
-  // إعدادات نافذة الويندوز
   await windowManager.ensureInitialized();
-  WindowOptions windowOptions = const WindowOptions(
+
+  const WindowOptions windowOptions = WindowOptions(
     size: Size(450, 350),
     center: true,
     backgroundColor: Colors.white,
@@ -23,6 +20,8 @@ void main() async {
     await windowManager.show();
     await windowManager.focus();
   });
+
+  await HotKeyService.initGlobalHotKey();
 
   runApp(const MyApp());
 }

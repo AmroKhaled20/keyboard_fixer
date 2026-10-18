@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'text_conversion_service.dart';
@@ -15,8 +16,14 @@ class HotKeyService {
     await hotKeyManager.register(
       hotKey,
       keyDownHandler: (hotKey) async {
+        debugPrint('\n========================================');
+        debugPrint('🎯 [HotKeyService] تم التقاط الاختصار (Ctrl + Alt + A)');
         await TextConversionService.convertSelectedText();
       },
+    );
+
+    debugPrint(
+      '✅ [HotKeyService] تم تسجيل الاختصار العام بنجاح وجاهز للاستماع',
     );
   }
 }
