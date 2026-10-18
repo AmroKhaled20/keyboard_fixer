@@ -15,7 +15,7 @@ class TextConversionService {
           await WindowsSimulatorService.waitForModifiersRelease();
       if (!modifiersReleased) return;
 
-      final initialSequenceNumber = GetClipboardSequenceNumber();
+      final int initialSequenceNumber = GetClipboardSequenceNumber();
 
       final bool copySent = WindowsSimulatorService.copySelectedText();
       if (!copySent) return;
@@ -40,22 +40,21 @@ class TextConversionService {
 
       await Clipboard.setData(ClipboardData(text: convertedText));
 
-      await Future.delayed(const Duration(milliseconds: 20));
-
-      WindowsSimulatorService.pasteText();
+      final bool pasteSent = WindowsSimulatorService.pasteText();
+      if (!pasteSent) return;
     } finally {
       _isProcessing = false;
     }
   }
 
   static Future<bool> _waitForClipboardUpdate(
-    Object initialSequenceNumber, {
-    Duration timeout = const Duration(milliseconds: 300),
+    int initialSequenceNumber, {
+    Duration timeout = const Duration(seconds: 1),
   }) async {
     final stopwatch = Stopwatch()..start();
 
     while (stopwatch.elapsed < timeout) {
-      final currentSequenceNumber = GetClipboardSequenceNumber();
+      final int currentSequenceNumber = GetClipboardSequenceNumber();
 
       if (currentSequenceNumber != initialSequenceNumber) {
         return true;

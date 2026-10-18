@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
+import 'text_conversion_service.dart';
 
 class HotKeyService {
   static Future<void> initGlobalHotKey() async {
@@ -7,16 +8,14 @@ class HotKeyService {
 
     final hotKey = HotKey(
       key: PhysicalKeyboardKey.keyA,
-      modifiers: [HotKeyModifier.shift, HotKeyModifier.alt],
+      modifiers: [HotKeyModifier.control, HotKeyModifier.alt],
       scope: HotKeyScope.system,
     );
 
     await hotKeyManager.register(
       hotKey,
-      keyDownHandler: (hotKey) {
-        print('تم التقاط الاختصار بنجاح من خارج التطبيق!');
-
-        // Copy → Convert → Paste
+      keyDownHandler: (hotKey) async {
+        await TextConversionService.convertSelectedText();
       },
     );
   }
