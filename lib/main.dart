@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
+import 'core/services/hotkey_service.dart';
+import 'features/home/presentation/views/home_view.dart'; // استدعاء الواجهة
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // تهيئة حزمة التحكم في نافذة الويندوز
-  await windowManager.ensureInitialized();
+  // تشغيل خدمة الكيبورد
+  await HotKeyService.initGlobalHotKey();
 
+  // إعدادات نافذة الويندوز
+  await windowManager.ensureInitialized();
   WindowOptions windowOptions = const WindowOptions(
     size: Size(450, 350),
     center: true,
     backgroundColor: Colors.white,
     skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.hidden, // إخفاء شريط الويندوز العلوي
+    titleBarStyle: TitleBarStyle.hidden,
   );
 
   windowManager.waitUntilReadyToShow(windowOptions, () async {
@@ -28,33 +32,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.keyboard_alt_outlined,
-                size: 80,
-                color: Colors.blueAccent,
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Keyboard Fixer',
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'تم تجهيز بيئة العمل بنجاح',
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-            ],
-          ),
-        ),
-      ),
+      home: HomeView(),
     );
   }
 }
