@@ -20,8 +20,10 @@ class WindowsSimulatorService {
       if (stopwatch.elapsed >= timeout) {
         return false;
       }
+
       await Future.delayed(const Duration(milliseconds: 15));
     }
+
     return true;
   }
 
@@ -37,24 +39,19 @@ class WindowsSimulatorService {
     return isAltPressed || isShiftPressed || isCtrlPressed;
   }
 
-  static bool _sendCtrlShortcut(VIRTUAL_KEY targetKey) {
+  static bool _sendCtrlShortcut(int targetKey) {
     const int inputCount = 4;
     final Pointer<INPUT> inputs = calloc<INPUT>(inputCount);
 
     try {
       _setKeyEvent(inputs, 0, VK_CONTROL, isKeyUp: false);
       _setKeyEvent(inputs, 1, targetKey, isKeyUp: false);
-
       _setKeyEvent(inputs, 2, targetKey, isKeyUp: true);
       _setKeyEvent(inputs, 3, VK_CONTROL, isKeyUp: true);
 
-      final Win32Result<int> result = SendInput(
-        inputCount,
-        inputs,
-        sizeOf<INPUT>(),
-      );
+      final int result = SendInput(inputCount, inputs, sizeOf<INPUT>());
 
-      return result.value == inputCount;
+      return result == inputCount;
     } finally {
       calloc.free(inputs);
     }
@@ -63,11 +60,11 @@ class WindowsSimulatorService {
   static void _setKeyEvent(
     Pointer<INPUT> inputs,
     int index,
-    VIRTUAL_KEY virtualKey, {
+    int virtualKey, {
     required bool isKeyUp,
   }) {
     inputs[index].type = INPUT_KEYBOARD;
     inputs[index].ki.wVk = virtualKey;
-    inputs[index].ki.dwFlags = isKeyUp ? KEYEVENTF_KEYUP : KEYBD_EVENT_FLAGS(0);
+    inputs[index].ki.dwFlags = isKeyUp ? KEYEVENTF_KEYUP : 0;
   }
 }

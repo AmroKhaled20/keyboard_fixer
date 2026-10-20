@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 import 'core/services/hotkey_service.dart';
+import 'core/services/startup_service.dart';
+import 'core/services/system_tray_service.dart';
 import 'features/home/presentation/views/home_view.dart';
 
-Future<void> main() async {
+void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await windowManager.ensureInitialized();
+  await StartupService.init();
+  await HotKeyService.initGlobalHotKey();
+  await SystemTrayService.initSystemTray();
 
   const WindowOptions windowOptions = WindowOptions(
     size: Size(450, 350),
     center: true,
     backgroundColor: Colors.white,
-    skipTaskbar: false,
+    skipTaskbar: true,
     titleBarStyle: TitleBarStyle.hidden,
   );
 
   windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
+    await windowManager.hide();
   });
-
-  await HotKeyService.initGlobalHotKey();
 
   runApp(const MyApp());
 }
