@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:windows_single_instance/windows_single_instance.dart';
 import 'core/services/hotkey_service.dart';
 import 'core/services/startup_service.dart';
 import 'core/services/system_tray_service.dart';
@@ -7,6 +8,14 @@ import 'features/home/presentation/views/home_view.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await WindowsSingleInstance.ensureSingleInstance(
+    args,
+    "keyboard_fixer_unique_instance_lock_2026",
+    onSecondWindow: (List<String> newArgs) async {
+      await SystemTrayService.showFromTray();
+    },
+  );
 
   await windowManager.ensureInitialized();
   await StartupService.init();
