@@ -20,7 +20,7 @@ class SystemTrayService with TrayListener {
 
     await trayManager.setToolTip(
       isConversionActive
-          ? 'Keyboard Fixer (مُفعّل - Ctrl+Alt+A)'
+          ? 'Keyboard Fixer (مُفعّل - Ctrl+Alt+A/E)'
           : 'Keyboard Fixer (متوقف مؤقتاً)',
     );
 

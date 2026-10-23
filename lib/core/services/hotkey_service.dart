@@ -4,11 +4,16 @@ import 'text_conversion_service.dart';
 
 class HotKeyService {
   static bool _isEnabled = false;
-
   static bool get isEnabled => _isEnabled;
 
-  static final HotKey _hotKey = HotKey(
+  static final HotKey _hotKeyAr = HotKey(
     key: PhysicalKeyboardKey.keyA,
+    modifiers: [HotKeyModifier.control, HotKeyModifier.alt],
+    scope: HotKeyScope.system,
+  );
+
+  static final HotKey _hotKeyEn = HotKey(
+    key: PhysicalKeyboardKey.keyE,
     modifiers: [HotKeyModifier.control, HotKeyModifier.alt],
     scope: HotKeyScope.system,
   );
@@ -19,12 +24,19 @@ class HotKeyService {
 
   static Future<void> enable() async {
     if (_isEnabled) return;
-
     await hotKeyManager.unregisterAll();
+
     await hotKeyManager.register(
-      _hotKey,
+      _hotKeyAr,
       keyDownHandler: (hotKey) async {
-        await TextConversionService.convertSelectedText();
+        await TextConversionService.convertSelectedText(toArabic: true);
+      },
+    );
+
+    await hotKeyManager.register(
+      _hotKeyEn,
+      keyDownHandler: (hotKey) async {
+        await TextConversionService.convertSelectedText(toArabic: false);
       },
     );
 
@@ -33,7 +45,6 @@ class HotKeyService {
 
   static Future<void> disable() async {
     if (!_isEnabled) return;
-
     await hotKeyManager.unregisterAll();
     _isEnabled = false;
   }

@@ -6,7 +6,7 @@ import 'windows_simulator_service.dart';
 class TextConversionService {
   static bool _isProcessing = false;
 
-  static Future<void> convertSelectedText() async {
+  static Future<void> convertSelectedText({required bool toArabic}) async {
     if (_isProcessing) return;
     _isProcessing = true;
 
@@ -37,9 +37,9 @@ class TextConversionService {
 
       if (originalText == null || originalText.isEmpty) return;
 
-      final String convertedText = KeyboardConverter.convertToArabic(
-        originalText,
-      );
+      final String convertedText = toArabic
+          ? KeyboardConverter.convertToArabic(originalText)
+          : KeyboardConverter.convertToEnglish(originalText);
 
       if (convertedText == originalText) {
         await _restoreClipboard(previousText);

@@ -1,5 +1,5 @@
 class KeyboardConverter {
-  static const Map<String, String> _enToAr = {
+  static const Map<String, String> _englishToArabicMap = {
     'q': 'ض',
     'w': 'ص',
     'e': 'ث',
@@ -12,6 +12,7 @@ class KeyboardConverter {
     'p': 'ح',
     '[': 'ج',
     ']': 'د',
+    '\\': '\\',
     'a': 'ش',
     's': 'س',
     'd': 'ي',
@@ -22,7 +23,7 @@ class KeyboardConverter {
     'k': 'ن',
     'l': 'م',
     ';': 'ك',
-    "'": 'ط',
+    '\'': 'ط',
     'z': 'ئ',
     'x': 'ء',
     'c': 'ؤ',
@@ -33,18 +34,97 @@ class KeyboardConverter {
     ',': 'و',
     '.': 'ز',
     '/': 'ظ',
+    '`': 'ذ',
+
+    'Q': 'ض',
+    'W': 'ص',
+    'E': 'ث',
+    'R': 'ق',
+    'U': 'ع',
+    'I': 'ه',
+    'O': 'خ',
+    'P': 'ح',
+    'A': 'ش',
+    'S': 'س',
+    'D': 'ي',
+    'F': 'ب',
+    'J': 'ت',
+    'K': 'ن',
+    'L': 'م',
+    'Z': 'ئ',
+    'X': 'ء',
+    'C': 'ؤ',
+    'V': 'ر',
+    'M': 'ة',
+
+    'H': 'أ',
+    'Y': 'إ',
+    'N': 'آ',
+    'G': 'لأ',
+    'T': 'لإ',
+    'B': 'لآ',
+
+    '?': '؟',
+    '<': ',',
+    '>': '.',
+    '{': '<',
+    '}': '>',
+    '~': 'ّ',
+    '"': '"',
+    ':': ':',
+    '|': '|',
+    '(': ')',
+    ')': '(',
+
+    '0': '٠',
+    '1': '١',
+    '2': '٢',
+    '3': '٣',
+    '4': '٤',
+    '5': '٥',
+    '6': '٦',
+    '7': '٧',
+    '8': '٨',
+    '9': '٩',
   };
 
-  static String convertToArabic(String text) {
-    if (text.isEmpty) return text;
+  static final Map<String, String> _arabicToEnglishMap = _initReverseMap();
 
-    final result = StringBuffer();
+  static Map<String, String> _initReverseMap() {
+    final map = <String, String>{};
+    _englishToArabicMap.forEach((en, ar) {
+      map.putIfAbsent(ar, () => en);
+    });
+    return map;
+  }
 
-    for (final character in text.split('')) {
-      final lowerCharacter = character.toLowerCase();
-      result.write(_enToAr[lowerCharacter] ?? character);
+  static String convertToArabic(String input) {
+    return _convert(input, _englishToArabicMap);
+  }
+
+  static String convertToEnglish(String input) {
+    return _convert(input, _arabicToEnglishMap);
+  }
+
+  static String _convert(String input, Map<String, String> map) {
+    final buffer = StringBuffer();
+    int i = 0;
+
+    while (i < input.length) {
+      if (i < input.length - 1) {
+        final String twoChars = input.substring(i, i + 2);
+        if (map.containsKey(twoChars)) {
+          buffer.write(map[twoChars]);
+          i += 2;
+          continue;
+        }
+      }
+
+      final String char = input[i];
+      buffer.write(map[char] ?? char);
+      i++;
     }
 
-    return result.toString();
+    return buffer.toString();
   }
 }
