@@ -1,45 +1,48 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_close_button.dart';
+import '../widgets/shortcut_card.dart';
+import '../widgets/window_controls.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.topRight,
-              child: const CustomCloseButton(),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF8F9FA),
+        body: Stack(
+          children: [
+            Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/app_icon.png', width: 150, height: 150),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'التطبيق يعمل الآن في الخلفية...',
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                    const SizedBox(height: 35),
+
+                    const ShortcutCard(
+                      title: 'للتحويل إلى العربية',
+                      keys: ['Ctrl', 'Alt', 'A'],
+                    ),
+                    const SizedBox(height: 12),
+                    const ShortcutCard(
+                      title: 'للتحويل إلى الإنجليزية',
+                      keys: ['Ctrl', 'Alt', 'E'],
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Icon(
-                  Icons.keyboard_alt_outlined,
-                  size: 80,
-                  color: Colors.blueAccent,
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Keyboard Fixer',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'التطبيق يعمل في الخلفية...',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-        ],
+
+            const Positioned(right: 10, top: 10, child: WindowControls()),
+          ],
+        ),
       ),
     );
   }

@@ -23,7 +23,7 @@ void main(List<String> args) async {
   await SystemTrayService.initSystemTray();
 
   const WindowOptions windowOptions = WindowOptions(
-    size: Size(450, 350),
+    size: Size(450, 400),
     center: true,
     backgroundColor: Colors.white,
     skipTaskbar: true,

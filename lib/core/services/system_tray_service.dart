@@ -66,6 +66,8 @@ class SystemTrayService with TrayListener {
 
   @override
   void onTrayIconRightMouseDown() async {
+    await windowManager.focus();
+
     await trayManager.popUpContextMenu();
   }
 
