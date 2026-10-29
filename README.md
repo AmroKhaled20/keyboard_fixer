@@ -1,6 +1,10 @@
 # ⌨️ Keyboard Fixer
 
-A robust, fully offline Windows desktop application built with Flutter to fix and toggle Arabic/English keyboard language layouts seamlessly using custom global shortcuts. Designed following production-ready software engineering standards and Clean Architecture principles.
+**Stop retyping!** Ever typed a long paragraph only to realize your keyboard was in the wrong language? 
+
+**Keyboard Fixer** is a smart, fully offline Windows desktop utility built with Flutter that solves this exact frustrating problem. It instantly transforms mistyped text into the correct language based on English-Arabic keyboard layout positioning. Instead of deleting and starting over (e.g., typing `"hgslhl"` instead of `"السلام"`), simply select the text, press a global hotkey, and watch it fix itself instantly anywhere on your system. 
+
+Built following production-ready software engineering standards and Clean Architecture principles for a seamless background experience.
 
 ---
 
